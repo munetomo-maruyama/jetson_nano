@@ -12,30 +12,26 @@
 # $< means First File Name of Dependent Files
 # $^ means List of Dependent Files
  
-PROGNAME := GPUFP32
+PROGNAME := GPUADD
 
 SRCDIR := src
 OBJDIR := obj
-SRCS := $(SRCDIR)/main.cu
+SRCS := $(SRCDIR)/main.cu   \
+        $(SRCDIR)/do_cpu.cu \
+        $(SRCDIR)/do_gpu.cu
 
 NVCC := nvcc
-DUMP := cuobjdump --dump-sass 
-NVCFLAGS := -O3 -gencode arch=compute_53,code=sm_53
-NVCINFFLAGS := --ptxas-options=-v
-NVCPTXFLAGS := --ptx
-NVCFATFLAGS := --fatbin
+NVCFLAGS := -O3 -gencode arch=compute_53,code=sm_53 --ptxas-options=-v
 LDFLAGS :=
 LIBS :=
 
 PROG := $(OBJDIR)/$(PROGNAME)
 OBJS := $(SRCS:%.cu=$(OBJDIR)/%.o)
 DEPS := $(SRCS:%.cu=$(OBJDIR)/%.d)
-PTXS := $(SRCS:%.cu=$(OBJDIR)/%.ptx)
-FATS := $(SRCS:%.cu=$(OBJDIR)/%.fatbin)
 
 .PHONY: all clean
 
-all: $(PROG) $(PTXS) $(FATS)
+all: $(PROG)
 
 $(PROG): $(OBJS)
 	$(NVCC) $(LDFLAGS) -o $@ $^ $(LIBS)
@@ -52,19 +48,7 @@ $(OBJDIR)/%.d:%.cu
 $(OBJDIR)/%.o:%.cu
 	@mkdir -p $(OBJDIR)
 	@mkdir -p $(OBJDIR)/$(SRCDIR)
-	$(NVCC) $(NVCFLAGS) $(NVCINFFLAGS) -c $< -o $@ 
-
-$(OBJDIR)/%.ptx:%.cu
-	@mkdir -p $(OBJDIR)
-	@mkdir -p $(OBJDIR)/$(SRCDIR)
-	$(NVCC) $(NVCFLAGS) $(NVCPTXFLAGS) -c $< -o $@ 
-
-$(OBJDIR)/%.fatbin:%.cu
-	@mkdir -p $(OBJDIR)
-	@mkdir -p $(OBJDIR)/$(SRCDIR)
-	$(NVCC) $(NVCFLAGS) $(NVCFATFLAGS) -c $< -o $@
-	$(DUMP) $@ > $@.lst
-	
+	$(NVCC) $(NVCFLAGS) -c $< -o $@ 
 
 clean:
 	rm -rf $(OBJDIR)/*

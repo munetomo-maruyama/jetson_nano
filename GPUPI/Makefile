@@ -39,6 +39,7 @@ $(PROG): $(OBJS)
 $(OBJDIR)/%.d:%.cu
 	@mkdir -p $(OBJDIR)
 	@mkdir -p $(OBJDIR)/$(SRCDIR)
+#	@$(NVCC) -M $(NVCFLAGS) $< > $@
 	@$(NVCC) -E -Xcompiler "-isystem $(CUDA_INSTALL_PATH)/include -MM" $(NVCFLAGS) -c $< -o $@
 	@sed -i '1s/^/$(OBJDIR)\/$(SRCDIR)\//' $@
 

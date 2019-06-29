@@ -12,7 +12,7 @@
 # $< means First File Name of Dependent Files
 # $^ means List of Dependent Files
  
-PROGNAME := GPUFP32
+PROGNAME := GPUDEV
 
 SRCDIR := src
 OBJDIR := obj
