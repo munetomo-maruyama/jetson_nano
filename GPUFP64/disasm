@@ -1,0 +1,9 @@
+#!/bin/bash
+
+nvcc --ptx  -O3 -gencode arch=compute_53,code=sm_53 -o main.ptx ./src/main.cu
+
+nvcc --fatbin -O3 -gencode arch=compute_53,code=sm_53 -o main.fatbin ./src/main.cu
+cuobjdump --dump-sass main.fatbin > main.fatbin.lst
+
+
+

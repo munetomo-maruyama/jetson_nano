@@ -1,0 +1,10 @@
+
+Fatbin elf code:
+================
+arch = sm_53
+code version = [1,7]
+producer = cuda
+host = linux
+compile_size = 64bit
+
+	code for sm_53
