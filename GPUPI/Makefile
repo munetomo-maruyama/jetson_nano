@@ -1,7 +1,7 @@
 #===============================
 # Makefile
 #-------------------------------
-# Rev.01 2019.04.28 M.Maruyama
+# Rev.01 2019.05.05 M.Maruyama
 #===============================
 # Memo
 # ${SRCS:.c=.o} means, 
@@ -18,20 +18,26 @@ SRCDIR := src
 OBJDIR := obj
 SRCS := $(SRCDIR)/main.cu   \
         $(SRCDIR)/pi_cpu.cu \
-        $(SRCDIR)/pi_gpu.cu
+        $(SRCDIR)/pi_gpu.cu 
 
 NVCC := nvcc
-NVCFLAGS := -O3 -gencode arch=compute_53,code=sm_53 --ptxas-options=-v
+DUMP := cuobjdump --dump-sass 
+NVCFLAGS := -O3 -gencode arch=compute_53,code=sm_53
+NVCINFFLAGS := --ptxas-options=-v
+NVCPTXFLAGS := --ptx
+NVCFATFLAGS := --fatbin
 LDFLAGS :=
 LIBS :=
 
 PROG := $(OBJDIR)/$(PROGNAME)
 OBJS := $(SRCS:%.cu=$(OBJDIR)/%.o)
 DEPS := $(SRCS:%.cu=$(OBJDIR)/%.d)
+PTXS := $(SRCS:%.cu=$(OBJDIR)/%.ptx)
+FATS := $(SRCS:%.cu=$(OBJDIR)/%.fatbin)
 
 .PHONY: all clean
 
-all: $(PROG)
+all: $(PROG) $(PTXS) $(FATS)
 
 $(PROG): $(OBJS)
 	$(NVCC) $(LDFLAGS) -o $@ $^ $(LIBS)
@@ -48,7 +54,19 @@ $(OBJDIR)/%.d:%.cu
 $(OBJDIR)/%.o:%.cu
 	@mkdir -p $(OBJDIR)
 	@mkdir -p $(OBJDIR)/$(SRCDIR)
-	$(NVCC) $(NVCFLAGS) -c $< -o $@ 
+	$(NVCC) $(NVCFLAGS) $(NVCINFFLAGS) -c $< -o $@ 
+
+$(OBJDIR)/%.ptx:%.cu
+	@mkdir -p $(OBJDIR)
+	@mkdir -p $(OBJDIR)/$(SRCDIR)
+	$(NVCC) $(NVCFLAGS) $(NVCPTXFLAGS) -c $< -o $@ 
+
+$(OBJDIR)/%.fatbin:%.cu
+	@mkdir -p $(OBJDIR)
+	@mkdir -p $(OBJDIR)/$(SRCDIR)
+	$(NVCC) $(NVCFLAGS) $(NVCFATFLAGS) -c $< -o $@
+	$(DUMP) $@ > $@.lst
+	
 
 clean:
 	rm -rf $(OBJDIR)/*

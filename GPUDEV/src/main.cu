@@ -63,7 +63,8 @@ int main(void)
     Device_Kernel <<<grid, block>>> ();
     //
     // Reset Device to output printf() results
-    CHECK(cudaDeviceReset());
+    CHECK(cudaDeviceSynchronize());
+  //CHECK(cudaDeviceReset());
     //
     // Return from this Program
     return(EXIT_SUCCESS);
