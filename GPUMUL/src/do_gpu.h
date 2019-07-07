@@ -16,6 +16,9 @@
 #include <cuda_runtime.h>
 #include <device_launch_parameters.h>
 
+#define SHARED_STATIC  (TRUE)
+#define SHARED_DYNAMIC (!SHARED_STATIC)
+//
 #define BLOCK_SIZE 32
 #define GPU_NITER 100
 
@@ -37,10 +40,10 @@
 //------------------------------------
 // Utility to access Shared Memeory
 //------------------------------------
-//#define sMat_A(x, y) sMat_AB[x + y * block_size_s]
-//#define sMat_B(x, y) sMat_AB[x + y * block_size_s + block_size_s * block_size_s]
-//#define sMat_A(x, y) sMat_AB[x + y * BLOCK_SIZE]
-//#define sMat_B(x, y) sMat_AB[x + y * BLOCK_SIZE + BLOCK_SIZE * BLOCK_SIZE]
+#if SHARED_DYNAMIC
+#define sMat_A(x, y) sMat_AB[x + y * block_size_s]
+#define sMat_B(x, y) sMat_AB[x + y * block_size_s + block_size_s * block_size_s]
+#endif
 
 //------------------------------------------------------------
 // Calculate Square Matrix Multiplication using Global Memory
