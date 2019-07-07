@@ -62,7 +62,7 @@ int main(void)
     // Call Kernel (warm up)
     Device_Kernel <<<grid, block>>> ();
     //
-    // Wait for terminate of all threads
+    // Wait for termination of all threads
     CHECK(cudaDeviceSynchronize());
     //
     // Reset Device
