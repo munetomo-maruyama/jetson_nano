@@ -62,9 +62,11 @@ int main(void)
     // Call Kernel (warm up)
     Device_Kernel <<<grid, block>>> ();
     //
-    // Reset Device to output printf() results
+    // Wait for terminate of all threads
     CHECK(cudaDeviceSynchronize());
-  //CHECK(cudaDeviceReset());
+    //
+    // Reset Device
+    CHECK(cudaDeviceReset());
     //
     // Return from this Program
     return(EXIT_SUCCESS);
