@@ -20,21 +20,22 @@
 #define SHARED_DYNAMIC (!SHARED_STATIC)
 //
 #define BLOCK_SIZE 32
-#define GPU_NITER 100
+#define GPU_NITER 10
 
 //----------------------------------
 // Check Error during CUDA Runtime
 //----------------------------------
-#define CHECK(call)                                                  \
-{                                                                    \
-    const cudaError_t error = call;                                  \
-    if (error != cudaSuccess)                                        \
-    {                                                                \
-        printf("Error: %s:%d, ", __FILE__, __LINE__);                \
-        printf("code:%d, reason: %s\n", error,                       \
-                cudaGetErrorString(error));                          \
-        exit(EXIT_FAILURE);                                          \
-    }                                                                \
+#define CHECK(func)                                    \
+{                                                      \
+    const cudaError_t error = func;                    \
+    if (error != cudaSuccess)                          \
+    {                                                  \
+        printf("Error: %s:%d, ", __FILE__, __LINE__);  \
+        printf("Code:%d, Reason: %s\n", error,         \
+                cudaGetErrorString(error));            \
+        cudaDeviceReset();                             \
+        exit(EXIT_FAILURE);                            \
+    }                                                  \
 }
 
 //------------------------------------

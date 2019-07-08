@@ -37,16 +37,17 @@ threadIdx.y = %d, blockIdx.y = %d, blockDim.y = %d\n",
 //----------------------------------
 // Check Error during CUDA Runtime
 //----------------------------------
-#define CHECK(call)                                                  \
-{                                                                    \
-    const cudaError_t error = call;                                  \
-    if (error != cudaSuccess)                                        \
-    {                                                                \
-        printf("Error: %s:%d, ", __FILE__, __LINE__);                \
-        printf("code:%d, reason: %s\n", error,                       \
-                cudaGetErrorString(error));                          \
-        exit(EXIT_FAILURE);                                          \
-    }                                                                \
+#define CHECK(func)                                    \
+{                                                      \
+    const cudaError_t error = func;                    \
+    if (error != cudaSuccess)                          \
+    {                                                  \
+        printf("Error: %s:%d, ", __FILE__, __LINE__);  \
+        printf("Code:%d, Reason: %s\n", error,         \
+                cudaGetErrorString(error));            \
+        cudaDeviceReset();                             \
+        exit(EXIT_FAILURE);                            \
+    }                                                  \
 }
 
 //----------------------------------

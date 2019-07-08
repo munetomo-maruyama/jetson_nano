@@ -17,9 +17,9 @@
 #include "common.h"
 #include "do_cpu.h"
 
-//---------------------------------------
-// Calculate Square Matrix Mutiplication
-//---------------------------------------
+//----------------------------------------
+// Calculate Square Matrix Multiplication
+//----------------------------------------
 void CPU_Calc(float *hMat_A, float *hMat_B, float *hMat_C, uint32_t mat_size)
 {
     for (uint32_t y = 0; y < mat_size; y++)
@@ -46,7 +46,7 @@ void CPU_Main(float *hMat_A, float *hMat_B, float *hMat_C, uint32_t mat_size)
     // Start Message
     printf("--------[CPU] Matrix (%d x %d) Multiplication...\n", (int)mat_size, (int)mat_size);
     //
-    // Calculate Square Matrix Mutiplication
+    // Calculate Square Matrix Multiplication
     double iStart = CPU_Second();
     CPU_Calc(hMat_A, hMat_B, hMat_C, mat_size);
     double iElaps = CPU_Second() - iStart;

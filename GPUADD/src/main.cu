@@ -43,7 +43,7 @@ double CPU_Second(void)
 }
 
 //------------------------
-// Caluculate Giga FLOPS
+// Calculate Giga FLOPS
 //------------------------
 double GFLOPS(double sec, uint32_t mat_size_x, uint32_t mat_size_y)
 {

@@ -29,7 +29,7 @@ __global__ void Device_Kernel(float *buf, const float a, const float b)
     uint32_t index = threadIdx.x + blockIdx.x * blockDim.x;
     if (index >= DATA_SIZE) return;
     //
-    float c = buf[index];;
+    float c = buf[index];
     //
     for (int i = 0; i < ITERATION; i++)
     {
@@ -41,16 +41,17 @@ __global__ void Device_Kernel(float *buf, const float a, const float b)
 //----------------------------------
 // Check Error during CUDA Runtime
 //----------------------------------
-#define CHECK(call)                                                  \
-{                                                                    \
-    const cudaError_t error = call;                                  \
-    if (error != cudaSuccess)                                        \
-    {                                                                \
-        printf("Error: %s:%d, ", __FILE__, __LINE__);                \
-        printf("code:%d, reason: %s\n", error,                       \
-                cudaGetErrorString(error));                          \
-        exit(EXIT_FAILURE);                                          \
-    }                                                                \
+#define CHECK(func)                                    \
+{                                                      \
+    const cudaError_t error = func;                    \
+    if (error != cudaSuccess)                          \
+    {                                                  \
+        printf("Error: %s:%d, ", __FILE__, __LINE__);  \
+        printf("Code:%d, Reason: %s\n", error,         \
+                cudaGetErrorString(error));            \
+        cudaDeviceReset();                             \
+        exit(EXIT_FAILURE);                            \
+    }                                                  \
 }
 
 //-----------------
@@ -64,7 +65,7 @@ double CPU_Second(void)
 }
 
 //------------------------
-// Caluculate Giga FLOPS
+// Calculate Giga FLOPS
 //------------------------
 double GFLOPS(double sec)
 {

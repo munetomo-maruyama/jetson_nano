@@ -57,7 +57,7 @@ void GPU_G_Main(float *hMat_A, float *hMat_B, float *hMat_G, uint32_t mat_size)
     CHECK(cudaMemcpy(dMat_A, hMat_A, nBytes, cudaMemcpyHostToDevice));        
     CHECK(cudaMemcpy(dMat_B, hMat_B, nBytes, cudaMemcpyHostToDevice));        
     //
-    // Calculate Square Matrix Mutiplication
+    // Calculate Square Matrix Multiplication
     dim3 block(BLOCK_SIZE, BLOCK_SIZE);
     dim3 grid((mat_size + block.x - 1) / block.x, (mat_size + block.y - 1) / block.y); 
     printf("Grid = (%d, %d), Block = (%d, %d)\n", grid.x, grid.y, block.x, block.y);
