@@ -1,4 +1,4 @@
-obj/src/main.o: src/main.cu \
+obj/src/do_cpu.o: src/do_cpu.cu \
  /usr/local/cuda/bin/../targets/aarch64-linux/include/cuda_runtime.h \
  /usr/local/cuda/bin/../targets/aarch64-linux/include/crt/host_config.h \
  /usr/local/cuda/bin/../targets/aarch64-linux/include/builtin_types.h \
@@ -54,5 +54,4 @@ obj/src/main.o: src/main.cu \
  /usr/local/cuda/bin/../targets/aarch64-linux/include/texture_indirect_functions.h \
  /usr/local/cuda/bin/../targets/aarch64-linux/include/surface_indirect_functions.h \
  /usr/local/cuda/bin/../targets/aarch64-linux/include/device_launch_parameters.h \
- src/common.h src/do_cpu.h src/do_gpu.h \
- /usr/local/cuda/bin/../targets/aarch64-linux/include/device_launch_parameters.h
+ src/common.h src/do_cpu.h

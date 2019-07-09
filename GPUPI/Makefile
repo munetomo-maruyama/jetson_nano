@@ -17,8 +17,8 @@ PROGNAME := GPUPI
 SRCDIR := src
 OBJDIR := obj
 SRCS := $(SRCDIR)/main.cu   \
-        $(SRCDIR)/pi_cpu.cu \
-        $(SRCDIR)/pi_gpu.cu 
+        $(SRCDIR)/do_cpu.cu \
+        $(SRCDIR)/do_gpu.cu 
 
 NVCC := nvcc
 DUMP := cuobjdump --dump-sass 
