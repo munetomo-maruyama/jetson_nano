@@ -24,7 +24,7 @@
 //-----------------
 void print_usage(char *cmd)
 {
-    printf("[Usage] %s [-c] [-g] [-s] matrix_size_x matrix_size_y\n", cmd);
+    printf("[Usage] %s [-c] [-g] matrix_size_x matrix_size_y\n", cmd);
     printf("    -c : Invoke CPU\n"); 
     printf("    -g : Invoke GPU\n"); 
     printf("    matrix_size_x : Specify Matrix Size X\n");
