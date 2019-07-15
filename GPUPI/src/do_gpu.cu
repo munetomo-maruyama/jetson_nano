@@ -45,21 +45,21 @@ __device__ int64_t GPU_Bin_Mod_Exp(int64_t a, int64_t b, int64_t c)
 __device__ double GPU_Sjd(int64_t j, int64_t d)
 {
     double sum = 0;
-    // k = 0 ... d
-    for (int64_t k = 0; k <= d; k++)
+    // k = 0 ... d-1
+    for (int64_t k = 0; k < d; k++)
     {
         sum = sum + (double)GPU_Bin_Mod_Exp(16, d - k, 8 * k + j) / (double)(8 * k + j);
     }
-    // k = (d + 1) ...
+    // k = d, d+1,  ...
     double numerator = 1;
     double denominator = 8 * d + j;
     double increase;
     for (int64_t k = 0; k < 8; k++)
     {
-        numerator = numerator / 16;
-        denominator = denominator + 8;
         increase = numerator / denominator;
         sum = sum + increase;
+        numerator = numerator / 16;
+        denominator = denominator + 8;
     }
     //    
     sum = sum - (int)sum;  // extract decimal part
@@ -92,9 +92,10 @@ __global__ void GPU_Calc_Pi_kernel(uint64_t digit_max, char *result_hex)
     Pi16d = 4 * GPU_Sjd(1, digit)
           - 2 * GPU_Sjd(4, digit)
           - 1 * GPU_Sjd(5, digit)
-          - 1 * GPU_Sjd(6, digit);
+          - 1 * GPU_Sjd(6, digit)
+          + 4;
     //
-    Pi16d = (Pi16d > 0) ? (Pi16d - (int) Pi16d) : (Pi16d - (int) Pi16d + 1);
+    Pi16d = Pi16d - (int) Pi16d;
     //
     for (int i = 0; i < DIGIT_STEP; i++)
     {

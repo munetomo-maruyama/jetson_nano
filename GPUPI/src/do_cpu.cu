@@ -42,22 +42,22 @@ int64_t CPU_Bin_Mod_Exp(int64_t a, int64_t b, int64_t c)
 double CPU_Sjd(int64_t j, int64_t d)
 {
     double sum = 0;
-    // k = 0 ... d
-    for (int64_t k = 0; k <= d; k++)
+    // k = 0 ... d-1
+    for (int64_t k = 0; k < d; k++)
     {
         sum = sum + (double)CPU_Bin_Mod_Exp(16, d - k, 8 * k + j) / (double)(8 * k + j);
     }
-    // k = (d + 1) ...
+    // k = d, d+1, ...
   //double error = 1 / (double) (0x1000000000);
     double numerator = 1;
     double denominator = 8 * d + j;
     double increase;
     for (int64_t k = 0; k < 8; k++)
     {
-        numerator = numerator / 16;
-        denominator = denominator + 8;
         increase = numerator / denominator;
         sum = sum + increase;
+        numerator = numerator / 16;
+        denominator = denominator + 8;
       //if (increase < error) break;
       //printf(".");
     }
@@ -89,9 +89,10 @@ void CPU_Calc_Pi(int64_t digit, char *result_hex)
 	Pi16d = 4 * CPU_Sjd(1, digit)
           - 2 * CPU_Sjd(4, digit)
           - 1 * CPU_Sjd(5, digit)
-          - 1 * CPU_Sjd(6, digit);
+          - 1 * CPU_Sjd(6, digit)
+          + 4;
     //
-	Pi16d = (Pi16d > 0) ? (Pi16d - (int) Pi16d) : (Pi16d - (int) Pi16d + 1);
+	Pi16d = Pi16d - (int) Pi16d;
     //
     for (int i = 0; i < DIGIT_STEP; i++)
     {
