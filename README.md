@@ -15,8 +15,8 @@ These are introduced in articles of "Transistor-Gijyutu, Sept/2019" by CQ publis
 ## Sample Programs for AI <br>
 Preparation : Install Python and PyTorch. <br>
 
- (1) MNIST : A Sample Program of Machine Larning <br>
-    Handwritten Digit Recognition writen in Pythn using PyTorch and TkInter. <br><br>
+ (1) MNIST : A Sample Program of Machine Learning <br>
+    Handwritten Digit Recognition in Python using PyTorch and TkInter. <br><br>
     - mainInfer.py : GUI Application for MNIST Inference (please run this first as a demo.) <br>
     - mainTrain.py : MNIST Training and Test Program <br>
     
